@@ -16,3 +16,8 @@ psql -U <user> -d <db_name> -f <file/path/command_file.sql> - in cmd line
 
 select enum_range(null::enum_user_role);
 drop type enum_user_role;
+
+--------------------------------
+DROP SCHEMA public CASCADE; CREATE SCHEMA public;
+--------------------------------
+
