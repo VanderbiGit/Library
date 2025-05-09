@@ -16,6 +16,10 @@ it's real library with books that has library. Web application will help:
 .\gradlew clean build
 ```
 
+### SQL Postgres
+```text
+psql -U <user> -d <db_name> -f <file/path/create_db.sql>
+```
 ### Run
 
 ```text
