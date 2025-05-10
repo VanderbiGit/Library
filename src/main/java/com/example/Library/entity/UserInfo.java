@@ -1,19 +1,14 @@
-package com.example.Library.Entity;
+package com.example.Library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Set;
-
 @Data
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users_info")
@@ -22,24 +17,21 @@ public class UserInfo implements BaseEntity<Integer> {
   @Column(name = "id", nullable = false)
   private Integer id;
 
-  @Column(name = "registrate_time", nullable = true)
-  private Timestamp registerTime;
+  @Column(name = "registered")
+  private Timestamp registered;
 
-  @Column(name = "last_visit_time", nullable = true)
-  private Timestamp lastVisitTime;
-
-  private BigDecimal balance;
+  @Column(name = "last_visit")
+  private Timestamp lastVisit;
 
   @Enumerated(EnumType.STRING)
   private EnumUserRole role;
 
   @Enumerated(EnumType.STRING)
-  private EnumUserStatus status;
+  private EnumAccountStatus status;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id", referencedColumnName = "id", nullable = false)
+  @OneToOne
+  @MapsId
+  @JoinColumn(name = "id")
   @JsonIgnore
   User user;
-
-
 }

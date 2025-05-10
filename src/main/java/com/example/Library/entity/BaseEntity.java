@@ -1,8 +1,9 @@
-package com.example.Library.Entity;
+package com.example.Library.entity;
 
 import java.io.Serializable;
 
 public interface BaseEntity<T extends Serializable> {
-    void setId(T id);
-    T getId();
+  void setId(T id);
+
+  T getId();
 }

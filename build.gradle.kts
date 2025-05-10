@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.4.0"
 	id("io.spring.dependency-management") version "1.1.6"
+	id("com.diffplug.spotless") version "7.0.2"
 }
 
 group = "com.example"
@@ -40,4 +41,19 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks {
+	build {
+		dependsOn(spotlessApply)
+	}
+}
+
+spotless {
+	java {
+		removeUnusedImports()
+		googleJavaFormat()
+		targetExclude("build/**/*.java")
+	}
+
 }

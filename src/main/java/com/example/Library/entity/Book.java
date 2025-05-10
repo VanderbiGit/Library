@@ -1,21 +1,18 @@
-package com.example.Library.Entity;
+package com.example.Library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.*;
 
-import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
-import java.util.Set;
-
-@Getter
-@Setter
+@Data
 @Entity
-// @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "book")
@@ -26,17 +23,17 @@ public class Book {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(nullable = false, length = 255)
+  @Column(nullable = false)
   private String name;
 
   @Column(nullable = false, length = 25)
   private String genre;
 
-  @Column(nullable = false, length = 255)
+  @Column(nullable = false)
   private String annotations;
 
-  @Column(name = "printed_date", nullable = false)
-  private LocalDateTime printedDate;
+  @Column(name = "realize", nullable = false)
+  private LocalDateTime realize;
 
   @Column(nullable = false, length = 50)
   private String publisher;
@@ -44,18 +41,21 @@ public class Book {
   @Column(name = "language_book", nullable = false, length = 25)
   private String languageBook;
 
-  @Column(name = "page_size", nullable = false)
-  private Integer pageSize;
+  @Column(name = "pages", nullable = false)
+  private Integer pages;
 
   @ManyToMany
   @JoinTable(
       name = "books_authors",
       joinColumns = @JoinColumn(name = "book_id"),
       inverseJoinColumns = @JoinColumn(name = "author_id"))
-  private Set<Author> authors;
+  private List<Author> authors = new ArrayList<>();
 
-  @OneToOne(mappedBy = "book", fetch = FetchType.LAZY)
-  BookStatus bookStatus;
+  @OneToOne(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  BookInfo bookInfo;
 
-
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  @JsonIgnore
+  private User user;
 }

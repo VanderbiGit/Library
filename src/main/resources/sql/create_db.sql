@@ -6,7 +6,7 @@ CREATE TYPE enum_account_status AS ENUM ('ACTIVATED', 'CLOSED', 'REMOVED');
 CREATE TYPE enum_user_role AS ENUM ('ADMIN', 'MANAGER', 'USER');
 
 CREATE TABLE IF NOT EXISTS address(
-    id INT PRIMARY KEY,
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     country varchar(100) NOT NULL,
     city varchar(100) NOT NULL,
     street varchar(100) NOT NULL,
@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS book(
     realize TIMESTAMP NOT NULL,
     publisher varchar(50) NOT NULL,
     language_book varchar(25) NOT NULL,
-    pages INT NOT NULL
+    pages INT NOT NULL,
+    user_id INTEGER REFERENCES users(id)
 );
 
 CREATE TABLE IF NOT EXISTS author(
@@ -74,23 +75,16 @@ CREATE TABLE IF NOT EXISTS book_info(
     FOREIGN KEY (id) REFERENCES book(id)
 );
 
-CREATE TABLE IF NOT EXISTS users_books(
-    user_id INT NOT NULL,
-    book_id INT NOT NULL,
-    PRIMARY KEY (user_id, book_id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (book_id) REFERENCES book(id)
-);
 
 --INSERT SECTION
-INSERT INTO address (id, country, city, street, house)
+INSERT INTO address (country, city, street, house)
 VALUES
-    (1, 'USA', 'New York', 'Broadway', '101A'),
-    (2, 'USA', 'New York', 'Manhattan', '56D'),
-    (3, 'USA', 'New York', 'Brooklyn', '138W'),
-    (4, 'USA', 'New York', 'Bronx', '38W'),
-    (5, 'USA', 'New York', 'Queens', '23T'),
-    (6, 'USA', 'New York', 'Bronx', '94S');
+    ('USA', 'New York', 'Broadway', '101A'),
+    ('USA', 'New York', 'Manhattan', '56D'),
+    ('USA', 'New York', 'Brooklyn', '138W'),
+    ('USA', 'New York', 'Bronx', '38W'),
+    ('USA', 'New York', 'Queens', '23T'),
+    ('USA', 'New York', 'Bronx', '94S');
 
 INSERT INTO users (name, surname, email, phone_number, address_id)
 VALUES
@@ -98,11 +92,11 @@ VALUES
     ('Anna', 'Doe', 'anna.doe@example.com', '+1234567890', 2),
     ('Tom', 'Doe', 'tom.doe@example.com', '+1234567890', 3);
 
-INSERT INTO book (name, genre, annotations, realize, publisher, language_book, pages)
+INSERT INTO book (name, genre, annotations, realize, publisher, language_book, pages, user_id)
 VALUES
-    ('The Great Gatsby', 'Fiction', 'A classic novel set in the 1920s.', '1925-04-10 00:00:00', 'Scribner', 'English', 180),
-    ('To Kill a Mockingbird', 'Fiction', 'A novel about racial injustice in the American South.', '1960-07-11 00:00:00', 'J.B. Lippincott & Co.', 'English', 281),
-    ('Moby-Dick', 'Adventure', 'A story about a captains obsession with a great white whale.', '1851-10-18 00:00:00', 'Harper & Brothers', 'English', 635);
+    ('The Great Gatsby', 'Fiction', 'A classic novel set in the 1920s.', '1925-04-10 00:00:00', 'Scribner', 'English', 180, 1),
+    ('To Kill a Mockingbird', 'Fiction', 'A novel about racial injustice in the American South.', '1960-07-11 00:00:00', 'J.B. Lippincott & Co.', 'English', 281, 2),
+    ('Moby-Dick', 'Adventure', 'A story about a captains obsession with a great white whale.', '1851-10-18 00:00:00', 'Harper & Brothers', 'English', 635, 3);
 
 INSERT INTO author (name, surname, birthday, date_death, short_bio, address_id)
 VALUES
@@ -134,8 +128,4 @@ VALUES
     (2, 3, 'Storage', 'This book palace in storage, not library'),
     (3, 5, 'Library', 'Flor 1, Section B, Shelf 23');
 
-INSERT INTO users_books(user_id, book_id)
-VALUES
-    (1,1),
-    (2,2);
 
