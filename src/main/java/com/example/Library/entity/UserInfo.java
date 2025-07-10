@@ -1,6 +1,5 @@
 package com.example.Library.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
@@ -29,9 +28,9 @@ public class UserInfo implements BaseEntity<Integer> {
   @Enumerated(EnumType.STRING)
   private EnumAccountStatus status;
 
-  @OneToOne
-  @MapsId
-  @JoinColumn(name = "id")
-  @JsonIgnore
-  User user;
+  //  @OneToOne
+  //  @MapsId
+  //  @JoinColumn(name = "id")
+  //  @JsonIgnore
+  //  User user;
 }

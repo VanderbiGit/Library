@@ -37,7 +37,8 @@ public class User implements BaseEntity<Integer> {
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private UserCredential credential;
 
-  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "id")
   private UserInfo userInfo;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
