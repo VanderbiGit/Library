@@ -26,4 +26,4 @@ spring:
       show_sql: true
       format_sql: true
       hb2ddl.auto: validate
-
+    open-in-view: false #Close sessions on repository

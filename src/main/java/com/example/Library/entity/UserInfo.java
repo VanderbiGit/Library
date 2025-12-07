@@ -2,17 +2,19 @@ package com.example.Library.entity;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "users_info")
 public class UserInfo implements BaseEntity<Integer> {
   @Id
+  @EqualsAndHashCode.Include
   @Column(name = "id", nullable = false)
   private Integer id;
 
@@ -28,9 +30,8 @@ public class UserInfo implements BaseEntity<Integer> {
   @Enumerated(EnumType.STRING)
   private EnumAccountStatus status;
 
-  //  @OneToOne
-  //  @MapsId
-  //  @JoinColumn(name = "id")
-  //  @JsonIgnore
-  //  User user;
+  @OneToOne
+  @MapsId
+  @JoinColumn(name = "id")
+  private User user;
 }

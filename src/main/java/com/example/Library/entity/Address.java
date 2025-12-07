@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Address implements BaseEntity<Integer> {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Integer id;
 
   @Column(nullable = false)
@@ -27,4 +27,9 @@ public class Address implements BaseEntity<Integer> {
 
   @Column(nullable = false)
   private String house;
+
+  @OneToOne
+  @MapsId
+  @JoinColumn(name = "id")
+  private User user;
 }

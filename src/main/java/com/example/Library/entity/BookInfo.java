@@ -4,14 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "book_info")
 public class BookInfo implements BaseEntity<Integer> {
 
-  @Id private Integer id;
+  @EqualsAndHashCode.Include @Id private Integer id;
   private Integer price;
 
   @Column(nullable = false, length = 100)

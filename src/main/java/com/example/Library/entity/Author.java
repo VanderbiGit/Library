@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "author")
 public class Author {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Integer id;
 
   @Column(nullable = false)
@@ -31,10 +32,6 @@ public class Author {
 
   @Column(name = "short_bio", nullable = false, length = 500)
   private String biography;
-
-  @OneToOne
-  @JoinColumn(name = "address_id")
-  private Address address;
 
   @ManyToMany(mappedBy = "authors")
   private List<Book> books = new ArrayList<>();

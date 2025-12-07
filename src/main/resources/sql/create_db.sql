@@ -5,21 +5,21 @@ CREATE SCHEMA public;
 CREATE TYPE enum_account_status AS ENUM ('ACTIVATED', 'CLOSED', 'REMOVED');
 CREATE TYPE enum_user_role AS ENUM ('ADMIN', 'MANAGER', 'USER');
 
-CREATE TABLE IF NOT EXISTS address(
-    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    country varchar(100) NOT NULL,
-    city varchar(100) NOT NULL,
-    street varchar(100) NOT NULL,
-    house varchar(100) NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS users (
     id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(25) NOT NULL,
     surname VARCHAR(25) NOT NULL,
     email VARCHAR(25) UNIQUE NOT NULL,
-    phone_number VARCHAR(15) NOT NULL,
-    address_id INTEGER REFERENCES address(id)
+    phone_number VARCHAR(15) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS address(
+    id INT PRIMARY KEY,
+    FOREIGN KEY (id) REFERENCES users(id),
+    country varchar(100) NOT NULL,
+    city varchar(100) NOT NULL,
+    street varchar(100) NOT NULL,
+    house varchar(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS book(
@@ -40,8 +40,7 @@ CREATE TABLE IF NOT EXISTS author(
     surname varchar(25) NOT NULL,
     birthday TIMESTAMP NOT NULL,
     date_death TIMESTAMP NOT NULL,
-    short_bio varchar(500) NOT NULL,
-    address_id INTEGER REFERENCES address(id)
+    short_bio varchar(500) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users_info(
@@ -77,20 +76,17 @@ CREATE TABLE IF NOT EXISTS book_info(
 
 
 --INSERT SECTION
-INSERT INTO address (country, city, street, house)
+INSERT INTO users (name, surname, email, phone_number)
 VALUES
-    ('USA', 'New York', 'Broadway', '101A'),
-    ('USA', 'New York', 'Manhattan', '56D'),
-    ('USA', 'New York', 'Brooklyn', '138W'),
-    ('USA', 'New York', 'Bronx', '38W'),
-    ('USA', 'New York', 'Queens', '23T'),
-    ('USA', 'New York', 'Bronx', '94S');
+    ('John', 'Doe', 'john.doe@example.com', '+1234567890'),
+    ('Anna', 'Doe', 'anna.doe@example.com', '+1234567890'),
+    ('Tom', 'Doe', 'tom.doe@example.com', '+1234567890');
 
-INSERT INTO users (name, surname, email, phone_number, address_id)
+INSERT INTO address (id, country, city, street, house)
 VALUES
-    ('John', 'Doe', 'john.doe@example.com', '+1234567890', 1),
-    ('Anna', 'Doe', 'anna.doe@example.com', '+1234567890', 2),
-    ('Tom', 'Doe', 'tom.doe@example.com', '+1234567890', 3);
+    (1, 'USA', 'New York', 'Broadway', '101A'),
+    (2, 'USA', 'New York', 'Manhattan', '56D'),
+    (3, 'USA', 'New York', 'Brooklyn', '138W');
 
 INSERT INTO book (name, genre, annotations, realize, publisher, language_book, pages, user_id)
 VALUES
@@ -98,11 +94,11 @@ VALUES
     ('To Kill a Mockingbird', 'Fiction', 'A novel about racial injustice in the American South.', '1960-07-11 00:00:00', 'J.B. Lippincott & Co.', 'English', 281, 2),
     ('Moby-Dick', 'Adventure', 'A story about a captains obsession with a great white whale.', '1851-10-18 00:00:00', 'Harper & Brothers', 'English', 635, 3);
 
-INSERT INTO author (name, surname, birthday, date_death, short_bio, address_id)
+INSERT INTO author (name, surname, birthday, date_death, short_bio)
 VALUES
-    ('F. Scott', 'Fitzgerald', '1896-09-24 00:00:00', '1940-12-21 00:00:00', 'An American novelist, widely regarded as one of the greatest writers of the 20th century.', 4),
-    ('Harper', 'Lee', '1926-04-28 00:00:00', '2016-02-19 00:00:00', 'An American author best known for her novel "To Kill a Mockingbird."', 5),
-    ('Herman', 'Melville', '1819-08-01 00:00:00', '1891-09-28 00:00:00', 'An American novelist, short story writer, and poet of the American Renaissance period.', 6);
+    ('F. Scott', 'Fitzgerald', '1896-09-24 00:00:00', '1940-12-21 00:00:00', 'An American novelist, widely regarded as one of the greatest writers of the 20th century.'),
+    ('Harper', 'Lee', '1926-04-28 00:00:00', '2016-02-19 00:00:00', 'An American author best known for her novel "To Kill a Mockingbird."'),
+    ('Herman', 'Melville', '1819-08-01 00:00:00', '1891-09-28 00:00:00', 'An American novelist, short story writer, and poet of the American Renaissance period.');
 
 INSERT INTO users_info
 VALUES

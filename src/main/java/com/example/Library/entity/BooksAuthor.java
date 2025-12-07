@@ -3,14 +3,18 @@ package com.example.Library.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "books_author")
 public class BooksAuthor {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @EqualsAndHashCode.Include
   private Integer id;
 
   @Column(name = "author_id", nullable = false)

@@ -2,18 +2,20 @@ package com.example.Library.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "user_credential")
 public class UserCredential implements BaseEntity<Integer> {
   @Id
   @Column(name = "id")
+  @EqualsAndHashCode.Include
   private Integer id;
 
   @Column(name = "password_hash", nullable = false)

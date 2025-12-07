@@ -1,21 +1,23 @@
 package com.example.Library.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "users")
 public class User implements BaseEntity<Integer> {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @EqualsAndHashCode.Include
   private Integer id;
 
   @Column(nullable = false)
@@ -30,17 +32,21 @@ public class User implements BaseEntity<Integer> {
   @Column(nullable = false, name = "phone_number")
   private String phoneNumber;
 
-  @OneToOne
-  @JoinColumn(name = "address_id")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Address address;
 
   @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private UserCredential credential;
 
-  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private UserInfo userInfo;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+  @JsonManagedReference
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Book> books = new ArrayList<>();
+
+  public void addBook(Book book) {
+    books.add(book);
+    book.setUser(this);
+  }
 }
